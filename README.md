@@ -1,4 +1,4 @@
-## Clojure Test Mode
+## Conjecture Mode
 
 This source repository includes `conjecture-mode.el`, which
 provides support for running Clojure tests (using the `conjecture.core`
