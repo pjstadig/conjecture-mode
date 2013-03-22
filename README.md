@@ -31,7 +31,7 @@ Copyright © 2013 Paul Stadig.
 
 Forked from clojure-test-mode.
 
-clojure-test-mode Copyright © 2007-2013 Jeffrey Chu, Lennart Staflin, Phil
-Hagelberg, and [contributors](https://github.com/technomancy/clojure-mode/contributors).
+Copyright © 2007-2013 Jeffrey Chu, Lennart Staflin, Phil Hagelberg, and
+[contributors](https://github.com/technomancy/clojure-mode/contributors).
 
 Distributed under the GNU General Public License; type <kbd>C-h C-c</kbd> to view it.
