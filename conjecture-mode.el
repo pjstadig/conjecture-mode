@@ -460,7 +460,7 @@ Clojure src file for the given test namespace.")
   "A minor mode for running Clojure tests.
 
 \\{conjecture-mode-map}"
-  nil " Test" conjecture-mode-map
+  nil " Conjecture" conjecture-mode-map
   (when (conjecture-nrepl-connected-p)
     (conjecture-load-reporting)))
 
