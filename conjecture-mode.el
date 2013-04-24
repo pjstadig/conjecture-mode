@@ -304,8 +304,8 @@ Clojure src file for the given test namespace.")
     (conjecture-clear)
     (conjecture-eval (format "(binding [conjecture.core/report conjecture.mode/report]
                                        (conjecture.core/run-tests '%s))"
-                               (clojure-find-ns))
-                       #'conjecture-get-results)))
+                             (clojure-find-ns))
+                     #'conjecture-get-results)))
 
 (defun conjecture-run-test ()
   "Run the test at point."
@@ -319,14 +319,14 @@ Clojure src file for the given test namespace.")
                                   (load-file \"%s\")
                                   (conjecture.mode/conjecture-mode-test-one-in-ns '%s '%s)
                                   (cons (:name (meta (var %s))) (:status (meta (var %s)))))"
-                               (buffer-file-name) (clojure-find-ns)
-                               test-name test-name test-name)
-                       (lambda (buffer result-str)
-                         (with-current-buffer buffer
-                           (let ((result (read result-str)))
-                             (if (cdr result)
-                                 (conjecture-extract-result result)
-                               (message "Not in a test."))))))))
+                             (buffer-file-name) (clojure-find-ns)
+                             test-name test-name test-name)
+                     (lambda (buffer result-str)
+                       (with-current-buffer buffer
+                         (let ((result (read result-str)))
+                           (if (cdr result)
+                               (conjecture-extract-result result)
+                             (message "Not in a test."))))))))
 
 (defun conjecture-show-result ()
   "Show the result of the test under point."
@@ -466,13 +466,24 @@ Clojure src file for the given test namespace.")
 
 (add-hook 'nrepl-connected-hook 'conjecture-load-reporting)
 
+(defconst conjecture-regex
+  (rx "conjecture.core"))
+
+(defun conjecture-find-conjecture ()
+  (let ((regexp conjecture-regex))
+    (save-restriction
+      (save-excursion
+        (goto-char (point-min))
+        (when (re-search-forward regexp nil t)
+          (match-string-no-properties 0))))))
+
 ;;;###autoload
 (progn
   (defun conjecture-maybe-enable ()
     "Enable conjecture-mode if the current buffer contains a namespace
 with a \"test.\" bit on it."
-    (let ((ns (clojure-find-package))) ; defined in clojure-mode.el
-      (when (and ns (string-match "test\\(\\.\\|$\\)" ns))
+    (let ((res (conjecture-find-conjecture)))
+      (when (and res (string-match "conjecture\\.core" res))
         (save-window-excursion
           (conjecture-mode t)))))
 
