@@ -466,15 +466,25 @@ Clojure src file for the given test namespace.")
 
 (add-hook 'nrepl-connected-hook 'conjecture-load-reporting)
 
+(defconst conjecture-test-regex
+  (rx "conjecture.core"))
+
+(defun conjecture-find-conjecture ()
+  (let ((regexp conjecture-test-regex))
+    (save-restriction
+      (save-excursion
+        (save-match-data
+          (goto-char (point-min))
+          (when (re-search-forward regexp nil t)
+            (match-string-no-properties 0)))))))
+
 ;;;###autoload
 (progn
   (defun conjecture-maybe-enable ()
-    "Enable conjecture-mode if the current buffer contains a namespace
-with a \"test.\" bit on it."
-    (let ((ns (clojure-find-package))) ; defined in clojure-mode.el
-      (when (and ns (string-match "test\\(\\.\\|$\\)" ns))
-        (save-window-excursion
-          (conjecture-mode t)))))
+    "Enable conjecture-mode if the current buffer contains \"conjecture.core\" bit in it."
+    (when (conjecture-find-conjecture)
+      (save-window-excursion
+        (conjecture-mode t))))
 
   (add-hook 'clojure-mode-hook 'conjecture-maybe-enable))
 
