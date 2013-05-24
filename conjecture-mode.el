@@ -304,8 +304,8 @@ Clojure src file for the given test namespace.")
     (conjecture-clear)
     (conjecture-eval (format "(binding [conjecture.core/report conjecture.mode/report]
                                        (conjecture.core/run-tests '%s))"
-                               (clojure-find-ns))
-                       #'conjecture-get-results)))
+                             (clojure-find-ns))
+                     #'conjecture-get-results)))
 
 (defun conjecture-run-test ()
   "Run the test at point."
@@ -319,14 +319,14 @@ Clojure src file for the given test namespace.")
                                   (load-file \"%s\")
                                   (conjecture.mode/conjecture-mode-test-one-in-ns '%s '%s)
                                   (cons (:name (meta (var %s))) (:status (meta (var %s)))))"
-                               (buffer-file-name) (clojure-find-ns)
-                               test-name test-name test-name)
-                       (lambda (buffer result-str)
-                         (with-current-buffer buffer
-                           (let ((result (read result-str)))
-                             (if (cdr result)
-                                 (conjecture-extract-result result)
-                               (message "Not in a test."))))))))
+                             (buffer-file-name) (clojure-find-ns)
+                             test-name test-name test-name)
+                     (lambda (buffer result-str)
+                       (with-current-buffer buffer
+                         (let ((result (read result-str)))
+                           (if (cdr result)
+                               (conjecture-extract-result result)
+                             (message "Not in a test."))))))))
 
 (defun conjecture-show-result ()
   "Show the result of the test under point."
